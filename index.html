@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GlowCoach // Progress App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0d0f14;
+            --card-bg: #161a23;
+            --accent-neon: #00ffcc;
+            --accent-pink: #ff007f;
+            --text-main: #ffffff;
+            --text-muted: #8f9cae;
+            --border-color: #242b3d;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px 16px 100px 16px;
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        header {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(45deg, var(--text-main), var(--accent-neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .date-badge {
+            font-size: 12px;
+            background: var(--card-bg);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            color: var(--accent-neon);
+            font-weight: 700;
+        }
+
+        /* Dashboard Overview */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .dash-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .dash-card.calories::before { background: var(--accent-neon); }
+        .dash-card.protein::before { background: var(--accent-pink); }
+
+        .dash-card label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .dash-card .value {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .dash-card .target {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Quick Log Form */
+        .log-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 8px;
+        }
+
+        input {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-main);
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--accent-neon);
+        }
+
+        button.btn-add {
+            background: var(--accent-neon);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 10px;
+            padding: 0 16px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button.btn-reset {
+            font-size: 11px;
+            background: transparent;
+            border: 1px solid var(--accent-pink);
+            color: var(--accent-pink);
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* Workout Routine Area */
+        .workout-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1e2638, var(--card-bg));
+            border-color: var(--accent-neon);
+            color: var(--accent-neon);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+        }
+
+        .exercise-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .exercise-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .exercise-scheme {
+            font-size: 12px;
+            color: var(--accent-pink);
+            font-weight: 700;
+            background: rgba(255, 0, 127, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .exercise-cue {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 14px;
+            line-height: 1.4;
+            border-left: 2px solid var(--border-color);
+            padding-left: 8px;
+        }
+
+        .tracker-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tracker-box {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .tracker-box span {
+            display: block;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .tracker-box input {
+            width: 100%;
+            padding: 6px;
+            background: transparent;
+            border: none;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        /* Bottom Nav Simulation */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(22, 26, 35, 0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>GLOWCOACH // PRO</h1>
+        <div class="date-badge" id="currentDate">MAY 13</div>
+    </header>
+
+    <div class="dashboard-grid">
+        <div class="dash-card calories">
+            <label>Remaining Cals</label>
+            <div class="value" id="calDisplay">1,200</div>
+            <div class="target">Target: 1200 kcal</div>
+        </div>
+        <div class="dash-card protein">
+            <label>Protein Logged</label>
+            <div class="value" id="proteinDisplay">0g</div>
+            <div class="target">Goal: ~100g</div>
+        </div>
+    </div>
+
+    <div class="log-section">
+        <div class="section-title">
+            <span>Quick Nutrition Log</span>
+            <button class="btn-reset" onclick="resetNutrition()">Reset Day</button>
+        </div>
+        <div class="input-row">
+            <input type="number" id="inputCals" placeholder="Kcal">
+            <input type="number" id="inputProtein" placeholder="Protein (g)">
+            <button class="btn-add" onclick="addNutrition()">+</button>
+        </div>
+    </div>
+
+    <div class="section-title">Workout Matrix (Lean Focus)</div>
+    <div class="workout-selector">
+        <button class="tab-btn active" id="btnUpper" onclick="switchWorkout('upper')">Upper Body & Core</button>
+        <button class="tab-btn" id="btnLower" onclick="switchWorkout('lower')">Lower Body (Strength)</button>
+    </div>
+
+    <div id="exerciseContainer"></div>
+
+    <div class="bottom-bar">
+        Designed for Shirly // Lean & Petite Project 12-Weeks
+    </div>
+
+    <script>
+        // Data Structure for Workouts
+        const routines = {
+            upper: [
+                { id: 'u1', name: 'Cable Pulldowns (פולי עליון)', scheme: '3-4 Sets x 15-20 Reps', cue: 'High reps, moderate weight. Build long, elegant lines without bulk. Focus on squeezing lats.' },
+                { id: 'u2', name: 'Dumbbell Shoulder Press', scheme: '3 Sets x 15 Reps', cue: 'Controlled tempo. Keeps shoulders sculpted, supporting an hourglass look.' },
+                { id: 'u3', name: 'Hanging Leg Raises / Captains Chair', scheme: '3 Sets x Max Reps', cue: 'Core focus. Control the negative drop. Keeps stomach flat and tight.' },
+                { id: 'u4', name: 'Plank Hold with Knee Tucks', scheme: '3 Sets x 45 Sec', cue: 'Deep transverse abdominis activation for structural waist narrowing.' }
+            ],
+            lower: [
+                { id: 'l1', name: 'Barbell Back Squats', scheme: '4 Sets x 8-10 Reps', cue: 'Strength base. Focus on depth and explosive drive from heels.' },
+                { id: 'l2', name: 'Romanian Deadlifts (RDL)', scheme: '4 Sets x 10 Reps', cue: 'Hinge back deep, feel the stretch in hamstrings and glutes. Protect lower back.' },
+                { id: 'l3', name: 'Leg Press (Wide/High Stance)', scheme: '3 Sets x 12 Reps', cue: 'Glute and hamstring emphasis. Keep tension throughout.' },
+                { id: 'l4', name: 'Seated Calf Raises', scheme: '3 Sets x 15 Reps', cue: 'Full range of motion. Slow squeeze at the apex.' }
+            ]
+        };
+
+        // Initialize App State
+        let state = {
+            caloriesConsumed: 0,
+            proteinConsumed: 0,
+            weights: {},
+            activeTab: 'upper'
+        };
+
+        // Load Data from LocalStorage
+        function loadState() {
+            const saved = localStorage.getItem('glowcoach_state');
+            if (saved) {
+                state = JSON.parse(saved);
+            } else {
+                // Default fallback structure
+                state.weights = {};
+            }
+            if(!state.activeTab) state.activeTab = 'upper';
+            updateUI();
+        }
+
+        // Save Data
+        function saveState() {
+            localStorage.setItem('glowcoach_state', JSON.stringify(state));
+        }
+
+        // Add Nutrition
+        function addNutrition() {
+            const calIn = parseInt(document.getElementById('inputCals').value) || 0;
+            const proIn = parseInt(document.getElementById('inputProtein').value) || 0;
+
+            state.caloriesConsumed += calIn;
+            state.proteinConsumed += proIn;
+
+            document.getElementById('inputCals').value = '';
+            document.getElementById('inputProtein').value = '';
+
+            saveState();
+            updateUI();
+        }
+
+        // Reset Nutrition Daily
+        function resetNutrition() {
+            if(confirm('Reset calories and protein trackers for today?')) {
+                state.caloriesConsumed = 0;
+                state.proteinConsumed = 0;
+                saveState();
+                updateUI();
+            }
+        }
+
+        // Track Workout Changes
+        function handleWeightChange(id, type, value) {
+            if (!state.weights[id]) state.weights[id] = { weight: '', reps: '' };
+            state.weights[id][type] = value;
+            saveState();
+        }
+
+        // Render Dynamic Interface
+        function switchWorkout(tab) {
+            state.activeTab = tab;
+            document.getElementById('btnUpper').classList.toggle('active', tab === 'upper');
+            document.getElementById('btnLower').classList.toggle('active', tab === 'lower');
+            saveState();
+            renderExercises();
+        }
+
+        function renderExercises() {
+            const container = document.getElementById('exerciseContainer');
+            container.innerHTML = '';
+
+            routines[state.activeTab].forEach(ex => {
+                const savedData = state.weights[ex.id] || { weight: '', reps: '' };
+                
+                const card = document.createElement('div');
+                card.className = 'exercise-card';
+                card.innerHTML = `
+                    <div class="exercise-header">
+                        <div class="exercise-name">${ex.name}</div>
+                        <div class="exercise-scheme">${ex.scheme}</div>
+                    </div>
+                    <div class="exercise-cue">${ex.cue}</div>
+                    <div class="tracker-row">
+                        <div class="tracker-box">
+                            <span>Weight (kg)</span>
+                            <input type="text" value="${savedData.weight}" placeholder="--" oninput="handleWeightChange('${ex.id}', 'weight', this.value)">
+                        </div>
+                        <div class="tracker-box">
+                            <span>Actual Reps</span>
+                            <input type="text" value="${savedData.reps}" placeholder="--" oninput="handleWeightChange('${ex.id}', 'reps', this.value)">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateUI() {
+            // Update Dashboard Counters
+            const remainingCals = 1200 - state.caloriesConsumed;
+            document.getElementById('calDisplay').innerText = remainingCals.toLocaleString();
+            document.getElementById('proteinDisplay').innerText = state.proteinConsumed + 'g';
+            
+            // Render Current Active Workout
+            switchWorkout(state.activeTab);
+        }
+
+        // Set Date
+        const options = { month: 'short', day: 'numeric' };
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-US', options).toUpperCase();
+
+        // On Startup
+        window.onload = loadState;
+    </script>
+</body>
+</html>
