@@ -1,474 +1,408 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GlowCoach // Progress App</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המאמן האישי שלי</title>
     <style>
         :root {
-            --bg-color: #0d0f14;
-            --card-bg: #161a23;
-            --accent-neon: #00ffcc;
-            --accent-pink: #ff007f;
-            --text-main: #ffffff;
-            --text-muted: #8f9cae;
-            --border-color: #242b3d;
-            --border-radius: 16px;
+            --primary: #8D6E63; /* גוון אדמה חם */
+            --primary-dark: #5D4037;
+            --bg-color: #FDFBF7;
+            --card-bg: #FFFFFF;
+            --text-color: #3E2723;
+            --accent: #D7CCC8;
+            --success: #81C784;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        
+        .container { max-width: 500px; width: 100%; }
+        .card { background: var(--card-bg); border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        h1, h2, h3 { color: var(--primary-dark); margin-top: 0; }
+        
+        input, select, button { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--accent); font-size: 16px; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
+        
+        button { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background-color: var(--primary-dark); }
+        
+        .hidden { display: none; }
+        
+        .macros-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; text-align: center; margin-bottom: 20px; }
+        .macro-box { background: var(--accent); padding: 15px; border-radius: 10px; }
+        .macro-box span { display: block; font-size: 24px; font-weight: bold; color: var(--primary-dark); }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 20px 16px 100px 16px;
-            max-width: 480px;
-            margin: 0 auto;
-            min-height: 100vh;
-        }
+        .flex-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .water-tracker button { width: 40px; height: 40px; border-radius: 50%; font-size: 20px; }
+        
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 16px; }
+        .checkbox-container input { width: auto; margin-bottom: 0; cursor: pointer; }
 
-        header {
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .food-inputs-pop { background: #fdf6f0; border: 1px dashed var(--primary); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .food-inputs-pop grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .food-inputs-pop input { margin-bottom: 5px; padding: 8px; font-size: 14px; }
 
-        header h1 {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(45deg, var(--text-main), var(--accent-neon));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .date-badge {
-            font-size: 12px;
-            background: var(--card-bg);
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            color: var(--accent-neon);
-            font-weight: 700;
-        }
-
-        /* Dashboard Overview */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .dash-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dash-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-        }
-
-        .dash-card.calories::before { background: var(--accent-neon); }
-        .dash-card.protein::before { background: var(--accent-pink); }
-
-        .dash-card label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 700;
-        }
-
-        .dash-card .value {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-
-        .dash-card .target {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        /* Quick Log Form */
-        .log-section {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 16px;
-            margin-bottom: 24px;
-        }
-
-        .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 14px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 8px;
-        }
-
-        input {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: var(--text-main);
-            padding: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        input:focus {
-            border-color: var(--accent-neon);
-        }
-
-        button.btn-add {
-            background: var(--accent-neon);
-            color: var(--bg-color);
-            border: none;
-            border-radius: 10px;
-            padding: 0 16px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button.btn-reset {
-            font-size: 11px;
-            background: transparent;
-            border: 1px solid var(--accent-pink);
-            color: var(--accent-pink);
-            padding: 4px 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        /* Workout Routine Area */
-        .workout-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .tab-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, #1e2638, var(--card-bg));
-            border-color: var(--accent-neon);
-            color: var(--accent-neon);
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
-        }
-
-        .exercise-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-
-        .exercise-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .exercise-name {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .exercise-scheme {
-            font-size: 12px;
-            color: var(--accent-pink);
-            font-weight: 700;
-            background: rgba(255, 0, 127, 0.1);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-
-        .exercise-cue {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-style: italic;
-            margin-bottom: 14px;
-            line-height: 1.4;
-            border-left: 2px solid var(--border-color);
-            padding-left: 8px;
-        }
-
-        .tracker-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .tracker-box {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px;
-        }
-
-        .tracker-box span {
-            display: block;
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .tracker-box input {
-            width: 100%;
-            padding: 6px;
-            background: transparent;
-            border: none;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-main);
-            text-align: center;
-        }
-
-        /* Bottom Nav Simulation */
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(22, 26, 35, 0.9);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border-color);
-            padding: 12px;
-            text-align: center;
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: 600;
-            z-index: 100;
-        }
+        .log-list { list-style: none; padding: 0; margin: 0; max-height: 150px; overflow-y: auto; }
+        .log-list li { background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 5px; font-size: 14px; border-right: 4px solid var(--primary); }
+        
+        #chatbot-response { background: #f0f0f0; padding: 15px; border-radius: 10px; font-style: italic; min-height: 50px; margin-top: 10px;}
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>GLOWCOACH // PRO</h1>
-        <div class="date-badge" id="currentDate">MAY 13</div>
-    </header>
+<div class="container">
 
-    <div class="dashboard-grid">
-        <div class="dash-card calories">
-            <label>Remaining Cals</label>
-            <div class="value" id="calDisplay">1,200</div>
-            <div class="target">Target: 1200 kcal</div>
-        </div>
-        <div class="dash-card protein">
-            <label>Protein Logged</label>
-            <div class="value" id="proteinDisplay">0g</div>
-            <div class="target">Goal: ~100g</div>
-        </div>
+    <div id="login-screen" class="card">
+        <h1 style="text-align:center;">המאמן החכם שלך</h1>
+        <p style="text-align:center;">התחבר או צור משתמש כדי להתחיל</p>
+        <input type="email" id="email" placeholder="אימייל">
+        <input type="password" id="password" placeholder="סיסמא">
+        <button onclick="login()">היכנס / הרשם</button>
     </div>
 
-    <div class="log-section">
-        <div class="section-title">
-            <span>Quick Nutrition Log</span>
-            <button class="btn-reset" onclick="resetNutrition()">Reset Day</button>
+    <div id="onboarding-screen" class="card hidden">
+        <h2>הגדרת יעדים ופרופיל</h2>
+        <select id="goal">
+            <option value="cut">חיטוב וירידה באחוזי שומן</option>
+            <option value="mass">עלייה במסת שריר</option>
+            <option value="maintain">שמירה על משקל וכושר</option>
+        </select>
+        <div class="flex-row">
+            <input type="number" id="weight" placeholder="משקל (ק״ג)">
+            <input type="number" id="height" placeholder="גובה (ס״מ)">
         </div>
-        <div class="input-row">
-            <input type="number" id="inputCals" placeholder="Kcal">
-            <input type="number" id="inputProtein" placeholder="Protein (g)">
-            <button class="btn-add" onclick="addNutrition()">+</button>
+        <select id="gender">
+            <option value="female">נקבה</option>
+            <option value="male">זכר</option>
+        </select>
+        <input type="text" id="muscles" placeholder="שרירים בדגש (למשל: ליבה, רגליים)">
+        <select id="workouts-per-week">
+            <option value="3">3 אימונים בשבוע (שעה לאימון)</option>
+            <option value="4">4 אימונים בשבוע (שעה לאימון)</option>
+            <option value="5">5 אימונים בשבוע (שעה לאימון)</option>
+        </select>
+        
+        <div class="checkbox-container">
+            <input type="checkbox" id="wants-running">
+            <label for="wants-running">אני מעוניין לשלב תוכנית ריצה</label>
         </div>
+
+        <input type="text" id="injuries" placeholder="פציעות / כאבים? (השאר ריק אם אין)">
+        <input type="text" id="allergies" placeholder="אלרגיות למזון? (השאר ריק אם אין)">
+        <button onclick="saveProfile()">שמור ובנה לי תוכנית</button>
     </div>
 
-    <div class="section-title">Workout Matrix (Lean Focus)</div>
-    <div class="workout-selector">
-        <button class="tab-btn active" id="btnUpper" onclick="switchWorkout('upper')">Upper Body & Core</button>
-        <button class="tab-btn" id="btnLower" onclick="switchWorkout('lower')">Lower Body (Strength)</button>
-    </div>
+    <div id="dashboard-screen" class="hidden">
+        <div class="card">
+            <h2>סיכום יומי</h2>
+            <div class="macros-grid">
+                <div class="macro-box">קלוריות נותרו<span id="cals-left">0</span></div>
+                <div class="macro-box">חלבון נותר (גרם)<span id="protein-left">0</span></div>
+                <div class="macro-box">פחמימה נותרה<span id="carbs-left">0</span></div>
+                <div class="macro-box">שומן נותר<span id="fat-left">0</span></div>
+            </div>
+            <p id="calorie-burned-display" style="color: var(--success); font-weight:bold; text-align:center;"></p>
+        </div>
 
-    <div id="exerciseContainer"></div>
-
-    <div class="bottom-bar">
-        Designed for Shirly // Lean & Petite Project 12-Weeks
-    </div>
-
-    <script>
-        // Data Structure for Workouts
-        const routines = {
-            upper: [
-                { id: 'u1', name: 'Cable Pulldowns (פולי עליון)', scheme: '3-4 Sets x 15-20 Reps', cue: 'High reps, moderate weight. Build long, elegant lines without bulk. Focus on squeezing lats.' },
-                { id: 'u2', name: 'Dumbbell Shoulder Press', scheme: '3 Sets x 15 Reps', cue: 'Controlled tempo. Keeps shoulders sculpted, supporting an hourglass look.' },
-                { id: 'u3', name: 'Hanging Leg Raises / Captains Chair', scheme: '3 Sets x Max Reps', cue: 'Core focus. Control the negative drop. Keeps stomach flat and tight.' },
-                { id: 'u4', name: 'Plank Hold with Knee Tucks', scheme: '3 Sets x 45 Sec', cue: 'Deep transverse abdominis activation for structural waist narrowing.' }
-            ],
-            lower: [
-                { id: 'l1', name: 'Barbell Back Squats', scheme: '4 Sets x 8-10 Reps', cue: 'Strength base. Focus on depth and explosive drive from heels.' },
-                { id: 'l2', name: 'Romanian Deadlifts (RDL)', scheme: '4 Sets x 10 Reps', cue: 'Hinge back deep, feel the stretch in hamstrings and glutes. Protect lower back.' },
-                { id: 'l3', name: 'Leg Press (Wide/High Stance)', scheme: '3 Sets x 12 Reps', cue: 'Glute and hamstring emphasis. Keep tension throughout.' },
-                { id: 'l4', name: 'Seated Calf Raises', scheme: '3 Sets x 15 Reps', cue: 'Full range of motion. Slow squeeze at the apex.' }
-            ]
-        };
-
-        // Initialize App State
-        let state = {
-            caloriesConsumed: 0,
-            proteinConsumed: 0,
-            weights: {},
-            activeTab: 'upper'
-        };
-
-        // Load Data from LocalStorage
-        function loadState() {
-            const saved = localStorage.getItem('glowcoach_state');
-            if (saved) {
-                state = JSON.parse(saved);
-            } else {
-                // Default fallback structure
-                state.weights = {};
-            }
-            if(!state.activeTab) state.activeTab = 'upper';
-            updateUI();
-        }
-
-        // Save Data
-        function saveState() {
-            localStorage.setItem('glowcoach_state', JSON.stringify(state));
-        }
-
-        // Add Nutrition
-        function addNutrition() {
-            const calIn = parseInt(document.getElementById('inputCals').value) || 0;
-            const proIn = parseInt(document.getElementById('inputProtein').value) || 0;
-
-            state.caloriesConsumed += calIn;
-            state.proteinConsumed += proIn;
-
-            document.getElementById('inputCals').value = '';
-            document.getElementById('inputProtein').value = '';
-
-            saveState();
-            updateUI();
-        }
-
-        // Reset Nutrition Daily
-        function resetNutrition() {
-            if(confirm('Reset calories and protein trackers for today?')) {
-                state.caloriesConsumed = 0;
-                state.proteinConsumed = 0;
-                saveState();
-                updateUI();
-            }
-        }
-
-        // Track Workout Changes
-        function handleWeightChange(id, type, value) {
-            if (!state.weights[id]) state.weights[id] = { weight: '', reps: '' };
-            state.weights[id][type] = value;
-            saveState();
-        }
-
-        // Render Dynamic Interface
-        function switchWorkout(tab) {
-            state.activeTab = tab;
-            document.getElementById('btnUpper').classList.toggle('active', tab === 'upper');
-            document.getElementById('btnLower').classList.toggle('active', tab === 'lower');
-            saveState();
-            renderExercises();
-        }
-
-        function renderExercises() {
-            const container = document.getElementById('exerciseContainer');
-            container.innerHTML = '';
-
-            routines[state.activeTab].forEach(ex => {
-                const savedData = state.weights[ex.id] || { weight: '', reps: '' };
-                
-                const card = document.createElement('div');
-                card.className = 'exercise-card';
-                card.innerHTML = `
-                    <div class="exercise-header">
-                        <div class="exercise-name">${ex.name}</div>
-                        <div class="exercise-scheme">${ex.scheme}</div>
-                    </div>
-                    <div class="exercise-cue">${ex.cue}</div>
-                    <div class="tracker-row">
-                        <div class="tracker-box">
-                            <span>Weight (kg)</span>
-                            <input type="text" value="${savedData.weight}" placeholder="--" oninput="handleWeightChange('${ex.id}', 'weight', this.value)">
-                        </div>
-                        <div class="tracker-box">
-                            <span>Actual Reps</span>
-                            <input type="text" value="${savedData.reps}" placeholder="--" oninput="handleWeightChange('${ex.id}', 'reps', this.value)">
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function updateUI() {
-            // Update Dashboard Counters
-            const remainingCals = 1200 - state.caloriesConsumed;
-            document.getElementById('calDisplay').innerText = remainingCals.toLocaleString();
-            document.getElementById('proteinDisplay').innerText = state.proteinConsumed + 'g';
+        <div class="card">
+            <h3>מה אכלת עכשיו?</h3>
+            <input type="text" id="food-input" oninput="showFoodDetailsForm()" placeholder="הקלד מה אכלת (למשל: חביתה וסלט)">
             
-            // Render Current Active Workout
-            switchWorkout(state.activeTab);
+            <div id="food-details-form" class="food-inputs-pop hidden">
+                <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--primary-dark);">הזן ערכים תזונתיים עבור הארוחה שלי:</p>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                    <input type="number" id="food-cals" placeholder="קלוריות">
+                    <input type="number" id="food-protein" placeholder="חלבון (גרם)">
+                    <input type="number" id="food-carbs" placeholder="פחמימה (גרם)">
+                    <input type="number" id="food-fat" placeholder="שומן (גרם)">
+                </div>
+            </div>
+
+            <button onclick="logFood()">הוסף ארוחה למאזן</button>
+            <ul id="food-log" class="log-list"></ul>
+        </div>
+
+        <div class="card">
+            <h3>עדכון אימון</h3>
+            <select id="workout-type">
+                <option value="strength">אימון כוח / ליבה (שעה)</option>
+                <option value="run" class="running-option hidden">ריצה / אינטרוולים (45 דק')</option>
+                <option value="strength_for_runners" class="running-option hidden">כוח מותאם לרצים (שעה)</option>
+            </select>
+            <button onclick="logWorkout()">סיימתי אימון!</button>
+        </div>
+
+        <div class="card">
+            <h3>מעקב מים וצעדים</h3>
+            <div class="flex-row water-tracker">
+                <span>כוסות מים: <strong id="water-count">0</strong>/8</span>
+                <div>
+                    <button onclick="updateWater(1)">+</button>
+                    <button onclick="updateWater(-1)">-</button>
+                </div>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            <div class="flex-row">
+                <input type="number" id="steps-input" placeholder="הכנס מספר צעדים">
+                <button onclick="updateSteps()" style="width: 100px; margin-bottom: 0;">עדכן</button>
+            </div>
+            <p>סה"כ צעדים היום: <strong id="steps-count">0</strong></p>
+        </div>
+
+        <div class="card">
+            <h3>התייעצות יומית (AI מקומי)</h3>
+            <input type="text" id="chat-input" placeholder="שאל אותי משהו על התוכנית שלך...">
+            <button onclick="askBot()">שאל</button>
+            <div id="chatbot-response">היי! אני המאמן המקומי שלך. הנתונים שלך מעודכנים אצלי בהתאם לפציעות ולמטרות שהזנת. איך אפשר לעזור?</div>
+        </div>
+        
+        <button onclick="logout()" style="background-color: #d32f2f;">התנתק</button>
+    </div>
+
+</div>
+
+<script>
+    // --- משתנים גלובליים ---
+    let currentUser = null;
+    let dailyData = {
+        consumedCals: 0, consumedProtein: 0, consumedCarbs: 0, consumedFat: 0,
+        burnedCals: 0, water: 0, steps: 0, foodItems: []
+    };
+    let targetMacros = { cals: 0, protein: 0, carbs: 0, fat: 0 };
+
+    // --- פונקציות ניווט והתחברות ---
+    function login() {
+        const email = document.getElementById('email').value;
+        if(!email) return alert("אנא הזן אימייל");
+        
+        const savedUser = JSON.parse(localStorage.getItem(email));
+        if (savedUser) {
+            currentUser = savedUser;
+            calculateTargets();
+            loadDailyData();
+            applyRunningSettings();
+            showScreen('dashboard-screen');
+        } else {
+            currentUser = { email: email };
+            showScreen('onboarding-screen');
+        }
+    }
+
+    function logout() {
+        currentUser = null;
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+        showScreen('login-screen');
+    }
+
+    function showScreen(screenId) {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('onboarding-screen').classList.add('hidden');
+        document.getElementById('dashboard-screen').classList.add('hidden');
+        document.getElementById(screenId).classList.remove('hidden');
+    }
+
+    // --- שמירת פרופיל וחישוב אלגוריתם תזונה ---
+    function saveProfile() {
+        currentUser.goal = document.getElementById('goal').value;
+        currentUser.weight = Number(document.getElementById('weight').value);
+        currentUser.height = Number(document.getElementById('height').value);
+        currentUser.gender = document.getElementById('gender').value;
+        currentUser.muscles = document.getElementById('muscles').value;
+        currentUser.workouts = document.getElementById('workouts-per-week').value;
+        currentUser.wantsRunning = document.getElementById('wants-running').checked;
+        currentUser.injuries = document.getElementById('injuries').value;
+        currentUser.allergies = document.getElementById('allergies').value;
+
+        if(!currentUser.weight || !currentUser.height) return alert("חובה להזין משקל וגובה לבניית התוכנית!");
+
+        localStorage.setItem(currentUser.email, JSON.stringify(currentUser));
+        calculateTargets();
+        saveDailyData(); 
+        applyRunningSettings();
+        showScreen('dashboard-screen');
+    }
+
+    function applyRunningSettings() {
+        const runningOptions = document.querySelectorAll('.running-option');
+        runningOptions.forEach(opt => {
+            if (currentUser.wantsRunning) {
+                opt.classList.remove('hidden');
+            } else {
+                opt.classList.add('hidden');
+                // החזרה לבחירת ברירת מחדל אם האופציה המוסתרת הייתה מסומנת
+                document.getElementById('workout-type').value = 'strength';
+            }
+        });
+    }
+
+    function calculateTargets() {
+        let bmr = (10 * currentUser.weight) + (6.25 * currentUser.height) - 100;
+        bmr = currentUser.gender === 'male' ? bmr + 5 : bmr - 161;
+        
+        let tdee = bmr * 1.375; 
+
+        if(currentUser.goal === 'cut') tdee -= 400; 
+        if(currentUser.goal === 'mass') tdee += 300; 
+        
+        targetMacros.cals = Math.round(tdee);
+        targetMacros.protein = Math.round(currentUser.weight * 2.2); 
+        targetMacros.fat = Math.round(currentUser.weight * 0.8);
+        
+        let remainingCals = targetMacros.cals - (targetMacros.protein * 4) - (targetMacros.fat * 9);
+        targetMacros.carbs = Math.max(0, Math.round(remainingCals / 4));
+        
+        updateDashboardUI();
+    }
+
+    // --- מעקב ושמירה יומית ---
+    function loadDailyData() {
+        const today = new Date().toLocaleDateString();
+        const savedData = JSON.parse(localStorage.getItem(currentUser.email + "_daily_" + today));
+        if (savedData) {
+            dailyData = savedData;
+        } else {
+            dailyData = { consumedCals: 0, consumedProtein: 0, consumedCarbs: 0, consumedFat: 0, burnedCals: 0, water: 0, steps: 0, foodItems: [] };
+        }
+        updateDashboardUI();
+    }
+
+    function saveDailyData() {
+        const today = new Date().toLocaleDateString();
+        localStorage.setItem(currentUser.email + "_daily_" + today, JSON.stringify(dailyData));
+        updateDashboardUI();
+    }
+
+    // --- לוגיקת אוכל גמישה ואינסופית ---
+    function showFoodDetailsForm() {
+        const input = document.getElementById('food-input').value;
+        const form = document.getElementById('food-details-form');
+        if(input.trim().length > 0) {
+            form.classList.remove('hidden');
+        } else {
+            form.classList.add('hidden');
+        }
+    }
+
+    function logFood() {
+        const nameInput = document.getElementById('food-input').value;
+        if(!nameInput.trim()) return;
+
+        // לקיחת הערכים שהמשתמש הזין או הגדרה כ-0 אם נשארו ריקים
+        const cals = Number(document.getElementById('food-cals').value) || 0;
+        const protein = Number(document.getElementById('food-protein').value) || 0;
+        const carbs = Number(document.getElementById('food-carbs').value) || 0;
+        const fat = Number(document.getElementById('food-fat').value) || 0;
+
+        dailyData.consumedCals += cals;
+        dailyData.consumedProtein += protein;
+        dailyData.consumedCarbs += carbs;
+        dailyData.consumedFat += fat;
+        
+        dailyData.foodItems.push(`${nameInput} (${cals} קל', ${protein}ג' חלבון)`);
+
+        // איפוס השדות
+        document.getElementById('food-input').value = '';
+        document.getElementById('food-cals').value = '';
+        document.getElementById('food-protein').value = '';
+        document.getElementById('food-carbs').value = '';
+        document.getElementById('food-fat').value = '';
+        
+        document.getElementById('food-details-form').classList.add('hidden');
+        
+        saveDailyData();
+    }
+
+    // --- לוגיקת אימונים ---
+    function logWorkout() {
+        const type = document.getElementById('workout-type').value;
+        let caloriesBurned = 0;
+        
+        if(type === 'strength' || type === 'strength_for_runners') {
+            caloriesBurned = Math.round(currentUser.weight * 4.5); 
+        } else if (type === 'run') {
+            caloriesBurned = Math.round(currentUser.weight * 7); 
         }
 
-        // Set Date
-        const options = { month: 'short', day: 'numeric' };
-        document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-US', options).toUpperCase();
+        dailyData.burnedCals += caloriesBurned;
+        alert(`כל הכבוד! שרפת בערך ${caloriesBurned} קלוריות באימון הזה. הנתון נוסף למאזן שלך.`);
+        saveDailyData();
+    }
 
-        // On Startup
-        window.onload = loadState;
-    </script>
+    // --- מים וצעדים ---
+    function updateWater(amount) {
+        dailyData.water += amount;
+        if(dailyData.water < 0) dailyData.water = 0;
+        if(dailyData.water === 3) alert("תזכורת: אל תשכח לשתות עוד, הגוף צריך נוזלים לאימון!");
+        saveDailyData();
+    }
+
+    function updateSteps() {
+        const steps = Number(document.getElementById('steps-input').value);
+        if(steps > 0) {
+            dailyData.steps += steps;
+            document.getElementById('steps-input').value = '';
+            saveDailyData();
+        }
+    }
+
+    // --- עדכון ממשק משתמש ---
+    function updateDashboardUI() {
+        const netCals = targetMacros.cals + dailyData.burnedCals;
+        
+        document.getElementById('cals-left').innerText = Math.max(0, netCals - dailyData.consumedCals);
+        document.getElementById('protein-left').innerText = Math.max(0, targetMacros.protein - dailyData.consumedProtein);
+        document.getElementById('carbs-left').innerText = Math.max(0, targetMacros.carbs - dailyData.consumedCarbs);
+        document.getElementById('fat-left').innerText = Math.max(0, targetMacros.fat - dailyData.consumedFat);
+        
+        if(dailyData.burnedCals > 0) {
+            document.getElementById('calorie-burned-display').innerText = `מצוין! שרפת ${dailyData.burnedCals} קלוריות מאימונים היום, זה הגדיל לך את תקציב הקלוריות.`;
+        } else {
+            document.getElementById('calorie-burned-display').innerText = '';
+        }
+
+        document.getElementById('water-count').innerText = dailyData.water;
+        document.getElementById('steps-count').innerText = dailyData.steps;
+
+        const ul = document.getElementById('food-log');
+        ul.innerHTML = '';
+        dailyData.foodItems.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = item;
+            ul.appendChild(li);
+        });
+    }
+
+    // --- צ'אט בוט מקומי ---
+    function askBot() {
+        const input = document.getElementById('chat-input').value;
+        const resBox = document.getElementById('chatbot-response');
+        if(!input) return;
+
+        let response = "אני כאן כדי לעזור! זכור להקפיד על שתיית מים, במיוחד בימי אימון.";
+        
+        if(input.includes("מתוק") || input.includes("קינוח")) {
+            response = "אם מתחשק לך משהו מתוק, אפשר להשתמש בסוכרלוז במקום סוכר, או להכין מאפינס מקמח שיבולת שועל ויוגורט עזים - זה משתלב מעולה בתוכנית הערכים שלך!";
+        } else if (input.includes("כואב") || input.includes("פציעה")) {
+            response = `שמתי לב שהגדרת רגישות/פציעה ב: ${currentUser.injuries || "אזור מסוים"}. אם כואב, כדאי להוריד משקלים או להחליף תרגיל. המטרה היא עקביות, לא פציעה.`;
+        } else if (input.includes("חלבון")) {
+            const missing = Math.max(0, targetMacros.protein - dailyData.consumedProtein);
+            response = `חסר לך עוד ${missing} גרם חלבון היום. ממליץ על חזה עוף, שייק חלבון או יוגורט מועשר לשלב בארוחה הבאה.`;
+        } else if (input.includes("ריצה")) {
+            if(currentUser.wantsRunning) {
+                response = "תוכנית הריצה שלך מופעלת! הקפד על שילוב אימוני כוח לרגליים וליבה כדי למנוע פציעות. אל תשכח לעשות חימום דינמי לפני שאתה יוצא!";
+            } else {
+                response = "כרגע לא הגדרת שאתה מעוניין בתוכנית ריצה בפרופיל שלך. אם תרצה, תוכל להירשם מחדש ולסמן את תיבת הריצה כדי לפתוח את האפשרות הזו.";
+            }
+        }
+
+        resBox.innerText = response;
+        document.getElementById('chat-input').value = '';
+    }
+</script>
+
 </body>
 </html>
