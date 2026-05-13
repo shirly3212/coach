@@ -3,72 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEON COACH PRO - NEON VISUAL</title>
+    <title>NEON COACH - VISUAL PRO</title>
     <style>
         :root {
-            --bg-color: #0A0F1E;
-            --card-bg: #141B2D;
-            --primary-neon: #00E5FF;
+            --bg-color: #050810;
+            --card-bg: #0F172A;
+            --primary-neon: #00F2FF;
             --secondary-neon: #7000FF;
             --success-neon: #39FF14;
-            --text-color: #E0E0E0;
-            --text-muted: #9E9E9E;
-            --accent: #212C45;
-            --border-glow: 0 0 10px rgba(0, 229, 255, 0.4);
-            --danger-neon: #FF1744;
+            --danger-neon: #FF003C;
+            --text-color: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border-glow: 0 0 15px rgba(0, 242, 255, 0.5);
         }
 
-        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 0; min-height: 100vh; padding-bottom: 70px; }
+        * { box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); margin: 0; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
         
-        .container { max-width: 500px; margin: auto; padding: 20px; }
-        .card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(0, 229, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .container { max-width: 480px; margin: auto; padding: 20px; }
+        .card { background: var(--card-bg); border-radius: 24px; padding: 24px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         
-        h1, h2, h3 { color: var(--primary-neon); text-align: center; text-transform: uppercase; margin-top: 0; }
-        h1 { text-shadow: var(--border-glow); font-size: 1.8rem; }
+        h1, h2, h3 { color: var(--primary-neon); text-align: center; text-transform: uppercase; margin: 0 0 20px 0; letter-spacing: 1px; }
+        h1 { text-shadow: var(--border-glow); font-size: 2rem; }
 
-        input, select, button { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--accent); background: #0A0F1E; color: white; font-size: 16px; transition: 0.3s; }
-        button { background: var(--primary-neon); color: black; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; }
-        button:hover { filter: brightness(1.2); box-shadow: var(--border-glow); transform: translateY(-1px); }
+        input, select, button { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #1E293B; background: #050810; color: white; font-size: 16px; outline: none; }
+        button { background: var(--primary-neon); color: #000; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        button:active { transform: scale(0.95); }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
 
-        /* Navigation Tabs */
-        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); display: flex; justify-content: space-around; padding: 10px; border-top: 1px solid var(--accent); z-index: 100; }
-        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; }
+        /* Navigation */
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
+        .nav-item { color: var(--text-muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; cursor: pointer; gap: 4px; flex: 1; }
         .nav-item.active { color: var(--primary-neon); }
-        .nav-item:hover { color: var(--primary-neon); }
+        .nav-item svg { width: 24px; height: 24px; fill: currentColor; }
 
-        /* Current/Target Body Types */
-        .body-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .body-option { border: 1px solid var(--accent); padding: 10px; border-radius: 10px; text-align: center; cursor: pointer; transition: 0.3s; color: var(--text-muted); }
-        .body-option span { font-size: 24px; color: var(--primary-neon); }
-        .body-option.selected { border-color: var(--primary-neon); background: rgba(0, 229, 255, 0.1); color: var(--text-color); }
+        /* Avatar System */
+        .avatar-container { background: #050810; border-radius: 20px; padding: 20px; text-align: center; position: relative; margin-bottom: 20px; border: 1px dashed var(--primary-neon); }
+        .human-svg { height: 250px; filter: drop-shadow(0 0 5px rgba(0,242,255,0.2)); }
+        .muscle-part { fill: #1E293B; stroke: #334155; stroke-width: 1; cursor: pointer; transition: 0.3s; }
+        .muscle-part.selected { fill: var(--primary-neon); stroke: white; }
+        .muscle-part.active-workout { fill: var(--danger-neon); filter: drop-shadow(0 0 8px var(--danger-neon)); }
 
-        /* Avatar Visuals */
-        #onboarding-targetAreas-avatar-area { text-align: center; margin-bottom: 20px; }
-        #targetAreas-avatar { font-family: monospace; color: var(--text-muted); line-height: 1.2; }
-        #targetAreas-list-container { text-align: right; }
-        #targetAreas-list { color: var(--primary-neon); list-style: none; padding: 0; }
+        /* Body Grid */
+        .body-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .body-opt { padding: 15px; border-radius: 15px; border: 1px solid #1E293B; text-align: center; cursor: pointer; color: var(--text-muted); font-size: 14px; }
+        .body-opt.selected { border-color: var(--primary-neon); background: rgba(0,242,255,0.1); color: white; }
 
-        /* Modal Visuals */
-        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: var(--card-bg); padding: 25px; border-radius: 20px; border: 2px solid var(--primary-neon); max-width: 400px; width: 90%; text-align: center; color: var(--text-color); }
-        .muscle-diagram { font-family: monospace; color: var(--danger-neon); margin-bottom: 15px; line-height: 1.2; white-space: pre-wrap; font-size: 13px; }
+        /* Dashboard */
+        .macros { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .m-box { background: #1E293B; padding: 15px; border-radius: 16px; text-align: center; }
+        .m-box span { display: block; font-size: 20px; font-weight: bold; color: var(--primary-neon); }
 
-        /* Exercise UI */
-        .exercise-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 15px; border-right: 4px solid var(--secondary-neon); }
-        .exercise-item strong { display: block; font-size: 16px; margin-bottom: 5px; }
-        .exercise-item span { color: var(--text-muted); font-size: 13px; }
-        .exercise-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 10px; }
-        .exercise-inputs input { margin-bottom: 0; padding: 8px; font-size: 13px; }
+        /* Workout List */
+        .ex-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 16px; margin-bottom: 12px; border-right: 4px solid var(--secondary-neon); }
+        .ex-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .ex-inputs input { margin-bottom: 0; padding: 8px; text-align: center; font-size: 14px; }
 
-        /* Macros and Lists */
-        .macros-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .macro-box { background: var(--accent); padding: 15px; border-radius: 12px; text-align: center; }
-        .macro-box span { display: block; font-size: 22px; font-weight: bold; color: var(--primary-neon); }
-        .log-list { list-style: none; padding: 0; font-size: 14px; }
-        .log-list li { background: rgba(255,255,255,0.05); padding: 10px; margin-bottom: 5px; border-radius: 5px; }
+        /* Modal */
+        #modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-body { background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 30px; border: 2px solid var(--primary-neon); padding: 30px; text-align: center; }
     </style>
 </head>
 <body>
@@ -76,412 +70,259 @@
 <div class="container" id="app">
 
     <div id="screen-login" class="card">
-        <h1>NEON COACH PRO</h1>
-        <p style="text-align:center; color:var(--text-muted); margin-bottom:15px;">התחבר או צור משתמש עם המייל שלך</p>
+        <h1>NEON COACH</h1>
         <input type="email" id="email" placeholder="אימייל">
-        <input type="password" id="password" placeholder="סיסמא">
-        <button onclick="auth()">כניסה / הרשמה</button>
+        <button onclick="login()">התחברות / הרשמה</button>
     </div>
 
     <div id="screen-onboarding" class="card hidden">
-        <h2>פרופיל אישי</h2>
-        <select id="gender">
-            <option value="" disabled selected>בחר מגדר</option>
-            <option value="male">זכר</option>
+        <h2>בניית פרופיל</h2>
+        <select id="gender" onchange="updateAvatarPreview()">
             <option value="female">נקבה</option>
+            <option value="male">זכר</option>
         </select>
-        <div class="flex-row" style="display:flex; gap:10px;">
+        <div style="display:flex; gap:10px;">
             <input type="number" id="age" placeholder="גיל">
-            <input type="number" id="height" placeholder="גובה">
             <input type="number" id="weight" placeholder="משקל">
+            <input type="number" id="height" placeholder="גובה">
         </div>
         
-        <label>יעד קלורי יומי</label>
-        <select id="calorie-mode" onchange="toggleCalorieInput()">
-            <option value="auto">המלצת המערכת (חישוב אוטומטי)</option>
-            <option value="manual">הזנה ידנית (למשל 1200 קלורי)</option>
+        <label>יעד קלורי:</label>
+        <select id="cal-mode" onchange="document.getElementById('manual-cal').classList.toggle('hidden', this.value==='auto')">
+            <option value="auto">חישוב אוטומטי</option>
+            <option value="manual">הזנה ידנית (למשל 1200)</option>
         </select>
-        <input type="number" id="manual-calories" class="hidden" placeholder="הכנס יעד קלורי מבוקש">
+        <input type="number" id="manual-cal" class="hidden" placeholder="כמה קלוריות ביום?">
 
-        <label>מראה גוף נוכחי</label>
-        <p style="color:var(--text-muted); font-size:12px; text-align:center;">תמונה: [דמות מראה גוף נוכחי]</p>
-        <div class="body-grid" id="current-body">
-            <div class="body-option" onclick="selectBody('current', 'broad')"><span>🔼</span><br>רחב למעלה</div>
-            <div class="body-option" onclick="selectBody('current', 'pear')"><span>🍐</span><br>אגסי</div>
-            <div class="body-option" onclick="selectBody('current', 'apple')"><span>🍎</span><br>תפוחי</div>
-            <div class="body-option" onclick="selectBody('current', 'hourglass')"><span>⏳</span><br>שעון חול</div>
+        <label>איך נראה הגוף שלך?</label>
+        <div class="body-grid">
+            <div class="body-opt" onclick="setBody('current','hourglass')">⏳ שעון חול</div>
+            <div class="body-opt" onclick="setBody('current','pear')">🍐 אגסי</div>
+            <div class="body-opt" onclick="setBody('current','apple')">🍎 תפוחי</div>
+            <div class="body-opt" onclick="setBody('current','broad')">🔼 רחב למעלה</div>
         </div>
 
-        <label>יעד מראה סופי</label>
-        <div class="body-grid" id="target-body">
-            <div class="body-option" onclick="selectBody('target', 'korean')"><span>✨</span><br>רזה קוריאני</div>
-            <div class="body-option" onclick="selectBody('target', 'muscular')"><span>💪</span><br>שרירי וחטוב</div>
+        <label>לאיזה מראה תרצי להגיע?</label>
+        <div class="body-grid">
+            <div class="body-opt" onclick="setBody('target','korean')">✨ רזה קוריאני</div>
+            <div class="body-opt" onclick="setBody('target','muscular')">💪 שרירי וחטוב</div>
         </div>
 
-        <button onclick="completeOnboarding()">צור תוכנית אישית</button>
+        <button onclick="goToAreas()">המשך לבחירת אזורים</button>
     </div>
 
-    <div id="screen-onboarding-targetAreas" class="card hidden">
-        <h2>אזורי מטרה לשינוי</h2>
-        <div id="onboarding-targetAreas-avatar-area">
-            <p id="targetAreas-intro-text"></p>
-            <pre id="targetAreas-avatar"></pre>
-        </div>
-        <div class="card" style="background: rgba(0,0,0,0.2); border-color: var(--primary-neon);">
-            <h3>לחץ על אזורים כדי להוסיף אותם כמטרה</h3>
-            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
-                <button onclick="toggleTargetArea('חזה / פלג עליון')" style="background: var(--card-bg); border:1px solid var(--primary-neon); color: var(--primary-neon); ">חזה / פלג עליון</button>
-                <button onclick="toggleTargetArea('זרועות')" style="background: var(--card-bg); border:1px solid var(--primary-neon); color: var(--primary-neon); ">זרועות</button>
-                <button onclick="toggleTargetArea('בטן / ליבה')" style="background: var(--card-bg); border:1px solid var(--primary-neon); color: var(--primary-neon); ">בטן / ליבה</button>
-                <button onclick="toggleTargetArea('רגליים')" style="background: var(--card-bg); border:1px solid var(--primary-neon); color: var(--primary-neon); ">רגליים</button>
-                <button onclick="toggleTargetArea('גלוטס (ישבן)')" style="background: var(--card-bg); border:1px solid var(--primary-neon); color: var(--primary-neon); ">גלוטס</button>
-                <button onclick="toggleTargetArea('גב')" style="background: var(--card-bg); border:1px solid var(--primary-neon); color: var(--primary-neon); ">גב</button>
+    <div id="screen-areas" class="card hidden">
+        <h2>מה נשפר היום?</h2>
+        <p style="text-align:center; color:var(--text-muted);">לחצי על האיברים בדמות כדי לסמן אזורי מטרה</p>
+        <div class="avatar-container" id="selection-avatar-box">
             </div>
-        </div>
-        <div id="targetAreas-list-container">
-            <h3>אזורי המטרה שלך:</h3>
-            <ul id="targetAreas-list"></ul>
-        </div>
-        <button onclick="finalizeOnboardingTargetAreas()">סיום בניית הפרופיל</button>
+        <button onclick="finishOnboarding()">סיימתי, בנה לי תוכנית!</button>
     </div>
 
     <div id="screen-main" class="hidden">
         <div class="card">
-            <h2 id="dash-title">סטטוס יומי</h2>
-            <div class="macros-grid">
-                <div class="macro-box">קלוריות<span id="cals-left">0</span></div>
-                <div class="macro-box">חלבון<span id="prot-left">0</span></div>
-                <div class="macro-box">פחמימה<span id="carb-left">0</span></div>
-                <div class="macro-box">שומן<span id="fat-left">0</span></div>
+            <h2 id="user-greeting">היי שירלי!</h2>
+            <div class="macros">
+                <div class="m-box">קלוריות נותרו<span id="cals">0</span></div>
+                <div class="m-box">חלבון נותר<span id="prots">0</span></div>
             </div>
-            <div style="text-align:center; font-size: 14px; color: var(--success-neon); margin-bottom:10px;">
-                צעדים: <span id="dash-steps">0</span>👣 | מים: <span id="dash-water">0</span> כוסות💧
-            </div>
+            <p style="text-align:center; color:var(--success-neon); margin-top:15px;">צעדים: <span id="steps-val">0</span> | מים: <span id="water-val">0</span></p>
         </div>
-        <div class="card">
-            <h3>אווטאר נוכחי ( ASCII Art)</h3>
-            <pre id="dashboard-avatar" style="font-family: monospace; color:var(--text-muted); text-align:center; line-height:1.2;"></pre>
-            <h3>אזורי המטרה שלך:</h3>
-            <ul id="dashboard-targetAreas-list" class="log-list" style="color:var(--primary-neon);"></ul>
+        <div class="card" style="text-align:center;">
+            <h3>הגוף שלך</h3>
+            <div id="dash-avatar-box"></div>
         </div>
-        <button onclick="logout()" style="background:var(--danger-neon);">התנתקות</button>
     </div>
 
     <div id="screen-nutrition" class="hidden">
         <div class="card">
-            <h3>יומן תזונה</h3>
-            <input type="text" id="food-name" placeholder="מה אכלת?">
-            <div class="flex-row" style="display:flex; gap:5px;">
-                <input type="number" id="food-c" placeholder="קל'">
-                <input type="number" id="food-p" placeholder="חלבון">
-                <input type="number" id="food-ca" placeholder="פח'">
-                <input type="number" id="food-f" placeholder="שומן">
+            <h3>יומן ארוחות</h3>
+            <input type="text" id="f-name" placeholder="שם המאכל">
+            <div style="display:flex; gap:5px;">
+                <input type="number" id="f-c" placeholder="קלוריות">
+                <input type="number" id="f-p" placeholder="חלבון">
             </div>
-            <button onclick="addFood()">הוסף ארוחה</button>
-            <ul id="food-list" class="log-list"></ul>
-        </div>
-        <div class="card">
-            <h3>שתייה וצעדים</h3>
-            <div style="display:flex; justify-content: space-around;">
-                <button onclick="updateWater(1)" style="width: 45%;">שתיתי כוס 💧</button>
-                <button onclick="addSteps()" style="width: 45%;">הוסף צעדים 👣</button>
-            </div>
+            <button onclick="logFood()">הוסף ארוחה</button>
+            <div id="food-list" style="max-height:200px; overflow-y:auto;"></div>
         </div>
     </div>
 
     <div id="screen-workout" class="hidden">
         <div class="card">
-            <h3>תוכנית אימונים מותאמת</h3>
-            <p id="workout-desc" style="font-size:13px; color: var(--text-muted); text-align:center;"></p>
+            <h3 id="workout-title">האימון היומי</h3>
             <div id="workout-list"></div>
-        </div>
-        <div class="card">
-            <h3>מעקב התקדמות</h3>
-            <ul id="workout-history" class="log-list"></ul>
         </div>
     </div>
 
-    <div class="nav-bar hidden" id="main-nav">
-        <div class="nav-item active" onclick="showTab('main')">🏠<span>בית</span></div>
-        <div class="nav-item" onclick="showTab('workout')">🏋️‍♂️<span>אימון</span></div>
-        <div class="nav-item" onclick="showTab('nutrition')">🥗<span>תזונה</span></div>
+    <div class="nav-bar hidden" id="nav">
+        <div class="nav-item active" onclick="tab('main')">🏠<span>בית</span></div>
+        <div class="nav-item" onclick="tab('workout')">🏋️<span>אימון</span></div>
+        <div class="nav-item" onclick="tab('nutrition')">🥗<span>תזונה</span></div>
     </div>
 
 </div>
 
-<div id="muscle-modal" class="modal hidden">
-    <div class="modal-content card">
-        <span onclick="closeMuscleModal()" style="color:var(--danger-neon); position:absolute; top:10px; right:10px; cursor:pointer; font-size:20px;">X</span>
-        <h3>דיאגרמת שרירים פועלים ( ASCII Art)</h3>
-        <p style="color:var(--text-muted); font-size:12px; margin-bottom:10px;">דוגמה: השרירים המסומנים באדום הם השרירים הפועלים</p>
-        <pre id="modal-muscle-diagram" class="muscle-diagram"></pre>
-        <ul id="modal-muscle-list" class="log-list" style="color:var(--danger-neon); list-style:none; text-align:right;"></ul>
-        <button onclick="closeMuscleModal()" style="margin-top:15px; background:var(--danger-neon);">סגור</button>
+<div id="modal" class="hidden">
+    <div class="modal-body">
+        <h3 id="modal-title">מיקוד שרירי</h3>
+        <div id="modal-svg-box"></div>
+        <p id="modal-text" style="color:var(--text-muted); margin-top:15px;"></p>
+        <button onclick="document.getElementById('modal').classList.add('hidden')" style="background:var(--danger-neon); color:white;">סגור</button>
     </div>
 </div>
 
 <script>
-    // ASCII Art avatars for current body types (Male/Female placeholders)
-    const avatars = {
-        male: {
-            broad: "   _  \n  | | \n--| |--\n /| |\\ \n / | \\ \n(____)",
-            pear: "   _  \n  | | \n--| |--\n /\\_/\\ \n(______) ",
-            apple: "   _  \n  | | \n --| |--\n (_____) \n (_____) \n(______) ",
-            hourglass: "   _  \n  | | \n--| |--\n \\_/ \\ \n /\\_/ \\ \n(______)"
-        },
-        female: {
-            broad: "   _  \n  | | \n --| |--\n /| |\\ \n / | \\ \n(____)",
-            pear: "   _  \n  | | \n --| |--\n /\\_/\\ \n(______) ",
-            apple: "   _  \n  | | \n --| |--\n (_____) \n (_____) \n(______) ",
-            hourglass: "   _  \n  | | \n--| |--\n \\_/ \\ \n /\\_/ \\ \n(______)"
-        }
-    };
+    // SVG Templates
+    function getHumanSVG(gender, highlightedPart = null, selectedParts = []) {
+        // דמות פשוטה ונקייה ב-SVG
+        const color = (part) => {
+            if(part === highlightedPart) return 'var(--danger-neon)';
+            if(selectedParts.includes(part)) return 'var(--primary-neon)';
+            return '#1E293B';
+        };
 
-    // Placeholder descriptive diagrams for specific muscle focuses (ASCII text descriptions)
-    const muscleDiagrams = {
-        'חזה / פלג עליון': "תמונה: [דמות שרירי גבר, חזה מסומן באדום]",
-        'זרועות': "תמונה: [דמות שרירי גבר, זרועות מסומנות באדום]",
-        'בטן / ליבה': "תמונה: [דמות שרירי גבר, בטן מסומנת באדום]",
-        'רגליים': "תמונה: [דמות שרירי גבר, רגליים מסומנות באדום]",
-        'גלוטס (ישבן)': "תמונה: [דמות שרירי גבר, ישבן מסומן באדום]",
-        'גב': "תמונה: [דמות שרירי גבר, גב מסומן באדום]"
-    };
+        return `
+        <svg viewBox="0 0 100 220" class="human-svg">
+            <circle cx="50" cy="20" r="12" fill="#1E293B" />
+            <path class="muscle-part ${selectedParts.includes('chest')?'selected':''} ${highlightedPart==='chest'?'active-workout':''}" 
+                  onclick="togglePart('chest')" d="M35 35 L65 35 L70 80 L30 80 Z" fill="${color('chest')}" />
+            <path class="muscle-part ${selectedParts.includes('arms')?'selected':''} ${highlightedPart==='arms'?'active-workout':''}" 
+                  onclick="togglePart('arms')" d="M70 35 L85 85 L75 88 L65 40 Z" fill="${color('arms')}" />
+            <path class="muscle-part ${selectedParts.includes('arms')?'selected':''} ${highlightedPart==='arms'?'active-workout':''}" 
+                  onclick="togglePart('arms')" d="M30 35 L15 85 L25 88 L35 40 Z" fill="${color('arms')}" />
+            <path class="muscle-part ${selectedParts.includes('abs')?'selected':''} ${highlightedPart==='abs'?'active-workout':''}" 
+                  onclick="togglePart('abs')" d="M30 85 L70 85 L65 120 L35 120 Z" fill="${color('abs')}" />
+            <path class="muscle-part ${selectedParts.includes('legs')?'selected':''} ${highlightedPart==='legs'?'active-workout':''}" 
+                  onclick="togglePart('legs')" d="M35 125 L48 210 L30 210 L25 125 Z" fill="${color('legs')}" />
+            <path class="muscle-part ${selectedParts.includes('legs')?'selected':''} ${highlightedPart==='legs'?'active-workout':''}" 
+                  onclick="togglePart('legs')" d="M65 125 L52 210 L70 210 L75 125 Z" fill="${color('legs')}" />
+        </svg>`;
+    }
 
-    let user = null;
-    let db = { calorieMode: 'auto', gender:'', age:0, weight:0, height:0, currentBody: '', targetBody: '', targetAreas: [], daily: { cals:0, p:0, c:0, f:0, steps:0, water:0, foods:[], history:[] } };
+    let state = { user: null, selectedParts: [] };
 
-    function auth() {
+    function login() {
         const email = document.getElementById('email').value;
-        if (!email) return alert("נא להזין אימייל");
-        const saved = localStorage.getItem(email);
-        if (saved) {
-            user = JSON.parse(saved);
-            loadDaily();
-            showTab('main');
-            document.getElementById('main-nav').classList.remove('hidden');
+        if(!email) return alert("הזן מייל");
+        const saved = localStorage.getItem('coach_'+email);
+        if(saved) {
+            state.user = JSON.parse(saved);
+            tab('main');
         } else {
-            user = { email, data: JSON.parse(JSON.stringify(db)) };
-            showScreen('screen-onboarding');
+            state.user = { email, gender: 'female', parts: [], daily: { cals:0, p:0, foods:[] } };
+            show('screen-onboarding');
         }
     }
 
-    function toggleCalorieInput() {
-        const mode = document.getElementById('calorie-mode').value;
-        document.getElementById('manual-calories').classList.toggle('hidden', mode === 'auto');
+    function updateAvatarPreview() {
+        state.user.gender = document.getElementById('gender').value;
     }
 
-    function selectBody(type, val) {
-        const parent = document.getElementById(type + '-body');
-        parent.querySelectorAll('.body-option').forEach(el => el.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
-        if(type === 'current') user.data.currentBody = val;
-        else user.data.targetBody = val;
+    function setBody(type, val) {
+        // ויזואליות בלבד לבחירה
+        const group = event.target.parentElement.querySelectorAll('.body-opt');
+        group.forEach(el => el.classList.remove('selected'));
+        event.target.classList.add('selected');
+        if(type==='current') state.user.currentBody = val;
+        else state.user.targetBody = val;
     }
 
-    function completeOnboarding() {
-        const g = document.getElementById('gender').value;
-        const age = document.getElementById('age').value;
+    function goToAreas() {
+        show('screen-areas');
+        document.getElementById('selection-avatar-box').innerHTML = getHumanSVG(state.user.gender);
+    }
+
+    function togglePart(part) {
+        const idx = state.selectedParts.indexOf(part);
+        if(idx === -1) state.selectedParts.push(part);
+        else state.selectedParts.splice(idx, 1);
+        document.getElementById('selection-avatar-box').innerHTML = getHumanSVG(state.user.gender, null, state.selectedParts);
+    }
+
+    function finishOnboarding() {
+        state.user.parts = state.selectedParts;
         const w = document.getElementById('weight').value;
         const h = document.getElementById('height').value;
-        const mode = document.getElementById('calorie-mode').value;
+        const mode = document.getElementById('cal-mode').value;
         
-        if (!g || !w || !h || !user.data.currentBody || !user.data.targetBody) return alert("נא למלא את כל השדות!");
+        if(mode === 'manual') state.user.goalCals = Number(document.getElementById('manual-cal').value);
+        else state.user.goalCals = Math.round((10*w) + (6.25*h) - 161 - 200); // נוסחת רזון
 
-        user.data.gender = g;
-        user.data.age = age;
-        user.data.weight = w;
-        user.data.height = h;
-        user.data.calorieMode = mode;
-
-        // Calculate calories
-        if (mode === 'manual') {
-            user.targetCals = Number(document.getElementById('manual-calories').value);
-        } else {
-            // Basic BMR
-            user.targetCals = Math.round((10 * w) + (6.25 * h) - (5 * age) - 161);
-            if (user.data.targetBody === 'korean') user.targetCals -= 200;
-        }
-        user.targetProt = Math.round(user.data.targetBody === 'korean' ? w * 1.2 : w * 2);
-        
-        showScreen('screen-onboarding-targetAreas');
-        showAvatarTargetAreas();
-    }
-
-    function showAvatarTargetAreas() {
-        const intro = document.getElementById('targetAreas-intro-text');
-        const avatar = document.getElementById('targetAreas-avatar');
-        intro.innerText = `שלום ${user.email}, הנה האווטאר הנוכחי שלך המבוסס על מבנה גוף ${user.data.currentBody} (${user.data.gender}). לחץ על כפתורי האזורים שתרצה לשנות יותר.`;
-        avatar.innerText = avatars[user.data.gender][user.data.currentBody];
-        updateTargetAreasUI();
-    }
-
-    function toggleTargetArea(area) {
-        const idx = user.data.targetAreas.indexOf(area);
-        if (idx === -1) {
-            user.data.targetAreas.push(area);
-        } else {
-            user.data.targetAreas.splice(idx, 1);
-        }
-        updateTargetAreasUI();
-    }
-
-    function updateTargetAreasUI() {
-        const list = document.getElementById('targetAreas-list');
-        list.innerHTML = user.data.targetAreas.map(area => `<li>${area}</li>`).join('');
-    }
-
-    function finalizeOnboardingTargetAreas() {
+        state.user.goalProt = w * 1.5;
         save();
-        loadDaily();
-        showTab('main');
-        document.getElementById('main-nav').classList.remove('hidden');
+        tab('main');
     }
 
-    function showTab(tab) {
-        showScreen('screen-' + tab);
+    function tab(name) {
+        show('screen-'+name);
+        document.getElementById('nav').classList.remove('hidden');
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        const idx = tab === 'main' ? 0 : (tab === 'workout' ? 1 : 2);
-        document.querySelectorAll('.nav-item')[idx].classList.add('active');
-        if(tab === 'workout') renderWorkout();
+        if(name==='workout') renderWorkouts();
         updateUI();
     }
 
-    function showScreen(id) {
-        ['screen-login', 'screen-onboarding', 'screen-onboarding-targetAreas', 'screen-main', 'screen-nutrition', 'screen-workout'].forEach(s => {
+    function renderWorkouts() {
+        const list = document.getElementById('workout-list');
+        list.innerHTML = '';
+        const exercises = state.user.targetBody === 'korean' ? 
+            [{n:"פילאטיס מזרן", m:"abs", d:"להרגיש את שרירי הבטן נאספים"}, {n:"סקוואט איטי", m:"legs", d:"דגש על יציבות והארכה"}] :
+            [{n:"לחיצת חזה", m:"chest", d:"עבודה על כוח פלג גוף עליון"}, {n:"פשיטת רגליים", m:"legs", d:"בניית מסת שריר"}];
+
+        exercises.forEach((ex, i) => {
+            const div = document.createElement('div');
+            div.className = 'ex-card';
+            div.innerHTML = `
+                <strong>${ex.n}</strong>
+                <button onclick="showMuscle('${ex.m}', '${ex.d}')" style="background:none; color:var(--primary-neon); padding:0; width:auto; font-size:12px; text-decoration:underline; margin-right:10px;">מיקוד שרירי</button>
+                <div class="ex-inputs">
+                    <input type="number" placeholder="משקל">
+                    <input type="number" placeholder="סטים">
+                    <input type="number" placeholder="חזרות">
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    }
+
+    function showMuscle(part, desc) {
+        document.getElementById('modal').classList.remove('hidden');
+        document.getElementById('modal-svg-box').innerHTML = getHumanSVG(state.user.gender, part);
+        document.getElementById('modal-text').innerText = desc;
+    }
+
+    function logFood() {
+        const c = Number(document.getElementById('f-c').value);
+        const p = Number(document.getElementById('f-p').value);
+        const n = document.getElementById('f-name').value;
+        if(!n) return;
+        state.user.daily.cals += c;
+        state.user.daily.p += p;
+        state.user.daily.foods.push({n, c});
+        save();
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('cals').innerText = state.user.goalCals - state.user.daily.cals;
+        document.getElementById('prots').innerText = Math.round(state.user.goalProt - state.user.daily.p);
+        document.getElementById('dash-avatar-box').innerHTML = getHumanSVG(state.user.gender, null, state.user.parts);
+        const list = document.getElementById('food-list');
+        list.innerHTML = state.user.daily.foods.map(f => `<div style="font-size:14px; margin-bottom:5px; border-bottom:1px solid #1E293B;">${f.n} - ${f.c} קל'</div>`).reverse().join('');
+    }
+
+    function save() {
+        localStorage.setItem('coach_'+state.user.email, JSON.stringify(state.user));
+    }
+
+    function show(id) {
+        ['screen-login','screen-onboarding','screen-areas','screen-main','screen-nutrition','screen-workout'].forEach(s => {
             document.getElementById(s).classList.add('hidden');
         });
         document.getElementById(id).classList.remove('hidden');
     }
 
-    function addFood() {
-        const n = document.getElementById('food-name').value;
-        const c = Number(document.getElementById('food-c').value) || 0;
-        const p = Number(document.getElementById('food-p').value) || 0;
-        const ca = Number(document.getElementById('food-ca').value) || 0;
-        const f = Number(document.getElementById('food-f').value) || 0;
-        if (!n) return;
-        user.data.daily.foods.push({ n, c, p, ca, f });
-        user.data.daily.cals += c;
-        user.data.daily.p += p;
-        user.data.daily.c += ca;
-        user.data.daily.f += f;
-        save();
-        updateUI();
-        document.getElementById('food-name').value = '';
-        document.getElementById('food-c').value = '';
-        document.getElementById('food-p').value = '';
-        document.getElementById('food-ca').value = '';
-        document.getElementById('food-f').value = '';
-    }
-
-    function updateWater(v) { user.data.daily.water += v; save(); updateUI(); }
-    function addSteps() { const s = prompt("כמה צעדים הוספת?"); if(s) { user.data.daily.steps += Number(s); save(); updateUI(); } }
-
-    function renderWorkout() {
-        const container = document.getElementById('workout-list');
-        const desc = document.getElementById('workout-desc');
-        container.innerHTML = '';
-        
-        let exercises = [];
-        if (user.data.targetBody === 'korean') {
-            desc.innerText = "מיקוד: הארכת שריר, שריפת שומן וסיבולת (מראה רזה קוריאני).";
-            exercises = [
-                { name: "פילאטיס ליבה", focus: "בטן / ליבה", focus_muscles:["ליבה", "בטן"] },
-                { name: "לאנג'ים אחוריים", focus: "רגליים", focus_muscles:["רגליים", "גלוטס"] },
-                { name: "פלאנק סטטי", focus: "בטן / ליבה", focus_muscles:["ליבה", "בטן"] },
-                { name: "ריצה קלה / הליכה מהירה", focus: "כללי / אירובי", focus_muscles:["לב-ריאה", "רגליים"] }
-            ];
-        } else {
-            desc.innerText = "מיקוד: בניית מסת שריר וכוח (היפרטרופיה).";
-            exercises = [
-                { name: "סקוואט עם משקל", focus: "רגליים", focus_muscles:["רגליים", "גלוטס"] },
-                { name: "לחיצת חזה", focus: "חזה / פלג עליון", focus_muscles:["חזה", "זרועות"] },
-                { name: "חתירה כנגד משקולת", focus: "גב", focus_muscles:["גב", "זרועות"] },
-                { name: "מתח / פולי עליון", focus: "גב", focus_muscles:["גב", "זרועות"] }
-            ];
-        }
-
-        exercises.forEach((ex, i) => {
-            const div = document.createElement('div');
-            div.className = 'exercise-item';
-            div.innerHTML = `
-                <strong>${ex.name}</strong>
-                <span>מיקוד שרירי: ${ex.focus}</span><br>
-                <button onclick="showMuscleFocus('${ex.focus}', '${ex.focus_muscles.join(', ')}')" style="margin-top:10px; padding:5px; font-size:12px; background:var(--card-bg); border:1px solid var(--primary-neon); color:var(--primary-neon);">כפתור: מיקוד שרירי</button>
-                <div class="exercise-inputs">
-                    <input type="number" id="w-${i}" placeholder="משקל">
-                    <input type="number" id="s-${i}" placeholder="סטים">
-                    <input type="number" id="r-${i}" placeholder="חזרות">
-                </div>
-                <button onclick="logEx(${i}, '${ex.name}')" style="margin-top:10px; padding:5px; font-size:12px; background:var(--secondary-neon);">כפתור: שמור ביצוע</button>
-            `;
-            container.appendChild(div);
-        });
-    }
-
-    function showMuscleFocus(area, muscles) {
-        const diagram = document.getElementById('modal-muscle-diagram');
-        const list = document.getElementById('modal-muscle-list');
-        const modal = document.getElementById('muscle-modal');
-        diagram.innerText = muscleDiagrams[area] || "תמונה: [דמות גוף]";
-        list.innerHTML = muscles.split(',').map(m => `<li>${m}</li>`).join('');
-        modal.classList.remove('hidden');
-    }
-
-    function closeMuscleModal() {
-        document.getElementById('muscle-modal').classList.add('hidden');
-    }
-
-    function logEx(i, name) {
-        const w = document.getElementById(`w-${i}`).value;
-        const s = document.getElementById(`s-${i}`).value;
-        const r = document.getElementById(`r-${i}`).value;
-        if(!s || !r) return alert("מלא סטים וחזרות");
-        const entry = `${name}: ${s}x${r} ${w ? 'במשקל ' + w + 'ק"ג' : ''}`;
-        user.data.daily.history.push(entry);
-        save();
-        updateUI();
-        alert("נשמר ביומן!");
-    }
-
-    function updateUI() {
-        document.getElementById('cals-left').innerText = Math.max(0, user.targetCals - user.data.daily.cals);
-        document.getElementById('prot-left').innerText = Math.max(0, user.targetProt - user.data.daily.p);
-        document.getElementById('carb-left').innerText = Math.max(0, (user.targetCals*0.5/4) - user.data.daily.c); // Estimated carbs
-        document.getElementById('fat-left').innerText = Math.max(0, (user.targetCals*0.25/9) - user.data.daily.f); // Estimated fats
-        document.getElementById('dash-steps').innerText = user.data.daily.steps;
-        document.getElementById('dash-water').innerText = user.data.daily.water;
-
-        const dbAvatar = document.getElementById('dashboard-avatar');
-        dbAvatar.innerText = avatars[user.data.gender][user.data.currentBody];
-        const dbTargetAreas = document.getElementById('dashboard-targetAreas-list');
-        dbTargetAreas.innerHTML = user.data.targetAreas.map(area => `<li>${area}</li>`).join('');
-
-        const fl = document.getElementById('food-list');
-        fl.innerHTML = user.data.daily.foods.map(f => `<li>${f.n} - ${f.c} קל' (${f.p}ג' חלבון)</li>`).reverse().join('');
-
-        const hl = document.getElementById('workout-history');
-        hl.innerHTML = user.data.daily.history.map(h => `<li>${h}</li>`).reverse().join('');
-    }
-
-    function save() { localStorage.setItem(user.email, JSON.stringify(user)); }
-
-    function loadDaily() {
-        const today = new Date().toLocaleDateString();
-        if (user.data.lastDate !== today) {
-            user.data.daily = JSON.parse(JSON.stringify(db.daily));
-            user.data.lastDate = today;
-            save();
-        }
-    }
-
-    function logout() {
-        localStorage.removeItem(user.email);
-        user = null;
-        showScreen('screen-login');
-        document.getElementById('main-nav').classList.add('hidden');
-    }
+    // וודא שהמודל מוסתר בהתחלה
+    window.onload = () => { document.getElementById('modal').classList.add('hidden'); };
 </script>
-
 </body>
 </html>
